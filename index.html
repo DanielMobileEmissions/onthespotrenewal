@@ -7,8 +7,6 @@
 <meta name="description" content="On the spot registration renewal in Utah. We come to your driveway, test your emissions and renew your registration on the spot. Done in 10 minutes."/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -19,7 +17,6 @@
   --navy-light: #1a5276;
   --text: #111827;
   --muted: #6b7280;
-  --white: #ffffff;
 }
 
 html { scroll-behavior: smooth; }
@@ -39,33 +36,20 @@ body {
   background: rgba(255,255,255,0.97);
   backdrop-filter: blur(8px);
   border-bottom: 1.5px solid #e8f4fd;
-  padding: 0 24px;
+  padding: 0 20px;
   height: 64px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.logo {
-  display: flex; align-items: center; gap: 10px;
-  text-decoration: none;
-}
-.logo-text {
-  font-size: 17px; font-weight: 900; line-height: 1.1;
-  color: var(--navy);
-}
-.logo-text span { color: var(--blue); }
-.logo-mountains {
-  width: 36px; height: 28px;
-}
-.header-cta {
-  display: flex; align-items: center; gap: 10px;
-}
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logo img { height: 42px; width: auto; display: block; }
+.header-cta { display: flex; align-items: center; gap: 10px; }
 .btn-call {
   display: flex; align-items: center; gap: 6px;
   background: transparent; border: 2px solid var(--blue);
   color: var(--blue); font-family: 'Nunito', sans-serif;
   font-size: 13px; font-weight: 800;
   padding: 8px 14px; border-radius: 8px;
-  text-decoration: none; transition: all 0.2s;
-  white-space: nowrap;
+  text-decoration: none; transition: all 0.2s; white-space: nowrap;
 }
 .btn-call:hover { background: var(--blue); color: #fff; }
 .btn-book {
@@ -74,101 +58,91 @@ body {
   font-family: 'Nunito', sans-serif;
   font-size: 13px; font-weight: 800;
   padding: 8px 14px; border-radius: 8px;
-  text-decoration: none; transition: background 0.2s;
-  white-space: nowrap;
+  text-decoration: none; transition: background 0.2s; white-space: nowrap;
 }
 .btn-book:hover { background: var(--blue-dark); }
 
 /* ── HERO ── */
 .hero {
-  min-height: 100vh;
-  display: flex; align-items: center;
   position: relative;
+  width: 100%;
+  min-height: calc(100vh - 64px);
+  margin-top: 64px;
+  display: flex;
+  align-items: center;
   overflow: hidden;
-  padding-top: 64px;
+  background: #fff;
 }
+
 .hero-bg {
   position: absolute; inset: 0;
-  background-image: url('https://raw.githubusercontent.com/DanielMobileEmissions/onthespotrenewal/main/Desktop Hero.png');
+  background-image: url('https://raw.githubusercontent.com/DanielMobileEmissions/onthespotrenewal/main/Desktop%20Hero.png');
   background-size: cover;
-  background-position: center right;
+  background-position: right center;
   background-repeat: no-repeat;
+  z-index: 0;
 }
+
+/* Matches mobileemissions.com: solid white left fading to transparent */
 .hero-bg::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(to right, rgba(255,255,255,1) 35%, rgba(255,255,255,0.7) 55%, rgba(255,255,255,0) 75%);
+  background: linear-gradient(
+    to right,
+    rgba(255,255,255,1) 0%,
+    rgba(255,255,255,1) 28%,
+    rgba(255,255,255,0.85) 42%,
+    rgba(255,255,255,0.3) 58%,
+    rgba(255,255,255,0) 72%
+  );
 }
+
 .hero-content {
   position: relative; z-index: 2;
-  max-width: 1200px; margin: 0 auto;
-  padding: 60px 40px;
-  width: 100%;
+  width: 100%; max-width: 1200px;
+  margin: 0 auto; padding: 60px 40px;
 }
+
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
   background: #e8f7ff; border: 1.5px solid #bae0ff;
   color: var(--blue); font-size: 12px; font-weight: 800;
   padding: 6px 14px; border-radius: 999px;
-  margin-bottom: 20px; letter-spacing: 0.5px;
-  text-transform: uppercase;
+  margin-bottom: 18px; letter-spacing: 0.5px; text-transform: uppercase;
 }
-.hero-badge svg { width: 14px; height: 14px; }
+.hero-badge svg { width: 14px; height: 14px; flex-shrink: 0; }
+
 .hero h1 {
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  font-weight: 900;
-  color: var(--navy);
-  line-height: 1.05;
-  margin-bottom: 8px;
-  max-width: 520px;
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+  font-weight: 900; color: var(--navy);
+  line-height: 1.05; margin-bottom: 8px; max-width: 500px;
 }
 .hero h1 span { color: var(--blue); display: block; }
+
 .hero-sub {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  color: var(--muted);
-  font-weight: 700;
-  margin-bottom: 28px;
-  max-width: 460px;
-  line-height: 1.5;
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  color: var(--muted); font-weight: 700;
+  margin-bottom: 24px; max-width: 440px; line-height: 1.6;
 }
+
 .hero-trust {
   display: flex; align-items: center; gap: 20px;
-  flex-wrap: wrap; margin-bottom: 32px;
+  flex-wrap: wrap; margin-bottom: 28px;
 }
-.trust-stars {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 13px; font-weight: 800; color: var(--navy);
-}
+.trust-stars { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800; color: var(--navy); }
 .stars { color: #f59e0b; font-size: 16px; letter-spacing: 1px; }
-.trust-badge {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 12px; font-weight: 700; color: var(--muted);
-}
-.trust-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--blue);
-}
+.trust-badge { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.trust-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
 
-/* ── WIDGET CARD ── */
+/* ── WIDGET ── */
 .widget-wrap {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(2,17,37,0.18);
-  padding: 24px;
-  max-width: 480px;
-  width: 100%;
+  background: #fff; border-radius: 14px;
+  box-shadow: 0 8px 40px rgba(2,17,37,0.16);
+  padding: 22px; max-width: 460px; width: 100%;
 }
-.widget-title {
-  font-size: 18px; font-weight: 900; color: var(--navy);
-  margin-bottom: 4px;
-}
-.widget-sub {
-  font-size: 13px; color: var(--muted);
-  margin-bottom: 18px; font-weight: 600;
-}
+.widget-title { font-size: 17px; font-weight: 900; color: var(--navy); margin-bottom: 3px; }
+.widget-sub { font-size: 13px; color: var(--muted); margin-bottom: 16px; font-weight: 600; }
 
-/* ZIP widget styles (same as main site) */
-#ots-widget * { box-sizing: border-box; }
 .ots-zip-row { display: flex; gap: 8px; width: 100%; margin-bottom: 4px; }
 .ots-zip-input {
   flex: 1; min-width: 0; height: 48px;
@@ -182,84 +156,40 @@ body {
 .ots-zip-btn {
   height: 48px; padding: 0 20px; background: var(--blue); color: #fff;
   border: none; border-radius: 10px; font-size: 15px; font-weight: 800;
-  cursor: pointer; font-family: 'Nunito', sans-serif; flex-shrink: 0;
-  transition: background .2s;
+  cursor: pointer; font-family: 'Nunito', sans-serif; flex-shrink: 0; transition: background .2s;
 }
 .ots-zip-btn:hover { background: var(--blue-dark); }
-.ots-zip-err { font-size: 12px; color: #ef4444; font-weight: 600; min-height: 16px; padding-left: 4px; margin-bottom: 6px; }
-.ots-divider {
-  display: flex; align-items: center; gap: 10px;
-  color: #6b7280; font-size: 13px; font-weight: 700;
-  margin: 10px 0;
-}
-.ots-divider::before, .ots-divider::after {
-  content: ''; flex: 1; height: 1.5px; background: #e4e8f0;
-}
+.ots-zip-err { font-size: 12px; color: #ef4444; font-weight: 600; min-height: 14px; padding-left: 4px; margin-bottom: 4px; }
+.ots-divider { display: flex; align-items: center; gap: 10px; color: #6b7280; font-size: 13px; font-weight: 700; margin: 10px 0; }
+.ots-divider::before, .ots-divider::after { content: ''; flex: 1; height: 1.5px; background: #e4e8f0; }
 .ots-loc-btn {
   width: 100%; height: 48px; background: #f0f9ff;
   border: 2px solid #bae0ff; border-radius: 10px;
   color: #0369a1; font-size: 15px; font-weight: 800;
   cursor: pointer; font-family: 'Nunito', sans-serif;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  transition: all .15s;
+  display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .15s;
 }
 .ots-loc-btn:hover { background: #e0f2fe; border-color: var(--blue); }
 .ots-loc-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-/* States */
 .ots-state { display: none; flex-direction: column; align-items: center; gap: 12px; }
 .ots-state.on { display: flex; }
-.ots-spinner {
-  width: 32px; height: 32px; border: 4px solid #e4e8f0;
-  border-top-color: var(--blue); border-radius: 50%;
-  animation: otsSpin .7s linear infinite;
-}
+.ots-spinner { width: 32px; height: 32px; border: 4px solid #e4e8f0; border-top-color: var(--blue); border-radius: 50%; animation: otsSpin .7s linear infinite; }
 @keyframes otsSpin { to { transform: rotate(360deg); } }
 .ots-ld-t { font-weight: 800; font-size: 14px; color: var(--blue); }
 .ots-ld-s { font-size: 12px; color: var(--muted); text-align: center; }
-
-.ots-addr-card {
-  width: 100%; background: #f0f9ff; border: 1.5px solid #bae0ff;
-  border-radius: 10px; padding: 12px 14px;
-  display: flex; align-items: flex-start; gap: 10px;
-}
-.ots-pin-dot {
-  width: 32px; height: 32px; background: var(--blue); border-radius: 50%;
-  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-}
+.ots-addr-card { width: 100%; background: #f0f9ff; border: 1.5px solid #bae0ff; border-radius: 10px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px; }
+.ots-pin-dot { width: 32px; height: 32px; background: var(--blue); border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .ots-pin-dot svg { width: 15px; height: 15px; display: block; }
 .ots-addr-body { flex: 1; min-width: 0; }
-.ots-street {
-  width: 100%; font-weight: 800; font-size: 15px; color: #111827;
-  border: none; background: transparent; outline: none;
-  border-bottom: 1.5px dashed #bae0ff; font-family: 'Nunito', sans-serif;
-  padding: 0; margin-bottom: 3px;
-}
+.ots-street { width: 100%; font-weight: 800; font-size: 15px; color: #111827; border: none; background: transparent; outline: none; border-bottom: 1.5px dashed #bae0ff; font-family: 'Nunito', sans-serif; padding: 0; margin-bottom: 3px; }
 .ots-city { font-size: 13px; color: var(--muted); margin-top: 2px; }
-
 .ots-btn-row { display: flex; gap: 10px; width: 100%; }
-.ots-btn-green {
-  flex: 1; height: 48px; background: #22C97A; color: #fff;
-  border: none; border-radius: 10px; font-size: 15px; font-weight: 800;
-  cursor: pointer; font-family: 'Nunito', sans-serif;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  transition: transform .1s;
-}
+.ots-btn-green { flex: 1; height: 48px; background: #22C97A; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform .1s; }
 .ots-btn-green:active { transform: scale(0.97); }
 .ots-btn-green svg { width: 18px; height: 18px; }
-.ots-btn-ghost {
-  height: 48px; padding: 0 16px;
-  background: transparent; color: var(--muted);
-  border: 1.5px solid #e4e8f0; border-radius: 10px;
-  font-size: 14px; font-weight: 800;
-  cursor: pointer; font-family: 'Nunito', sans-serif;
-  white-space: nowrap;
-}
-.ots-out {
-  width: 100%; background: #fff7ed; border: 1.5px solid #fed7aa;
-  border-radius: 10px; padding: 10px 14px; font-size: 13px;
-  color: #92400e; font-weight: 600; text-align: center; display: none;
-}
+.ots-btn-ghost { height: 48px; padding: 0 16px; background: transparent; color: var(--muted); border: 1.5px solid #e4e8f0; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; white-space: nowrap; }
+.ots-out { width: 100%; background: #fff7ed; border: 1.5px solid #fed7aa; border-radius: 10px; padding: 10px 14px; font-size: 13px; color: #92400e; font-weight: 600; text-align: center; display: none; }
 .ots-out.on { display: block; }
 .ots-note { font-size: 12px; color: var(--muted); text-align: center; }
 .ots-ok-t { font-weight: 900; font-size: 15px; color: #18A362; }
@@ -267,174 +197,93 @@ body {
 .ots-icon { font-size: 2rem; }
 .ots-etitle { font-weight: 800; font-size: 14px; color: var(--text); text-align: center; }
 .ots-emsg { font-size: 13px; color: var(--muted); text-align: center; }
-.ots-btn-outline {
-  width: 100%; height: 48px; background: transparent;
-  border: 2px solid var(--blue); color: var(--blue);
-  border-radius: 10px; font-size: 15px; font-weight: 800;
-  cursor: pointer; font-family: 'Nunito', sans-serif;
-}
+.ots-btn-outline { width: 100%; height: 48px; background: transparent; border: 2px solid var(--blue); color: var(--blue); border-radius: 10px; font-size: 15px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
 
-/* ── WHAT IS OTS SECTION ── */
+/* ── SECTIONS ── */
 .section { padding: 80px 24px; }
 .section-inner { max-width: 1100px; margin: 0 auto; }
-.section-label {
-  font-size: 11px; font-weight: 800; color: var(--blue);
-  text-transform: uppercase; letter-spacing: 1.5px;
-  margin-bottom: 12px;
-}
-.section-title {
-  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-  font-weight: 900; color: var(--navy);
-  line-height: 1.1; margin-bottom: 16px;
-}
-.section-title span { color: var(--blue); }
-.section-body {
-  font-size: 1.05rem; color: var(--muted);
-  line-height: 1.7; font-weight: 600;
-  max-width: 600px; margin-bottom: 40px;
-}
-
-/* ── HOW IT WORKS ── */
 .hiw-bg { background: #f8fbff; }
-.steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 24px; margin-top: 40px;
-}
-.step {
-  background: #fff;
-  border-radius: 14px;
-  border: 1.5px solid #e8f4fd;
-  padding: 28px 24px;
-  position: relative;
-  box-shadow: 0 4px 20px rgba(2,17,37,0.06);
-}
-.step-num {
-  width: 44px; height: 44px;
-  background: var(--blue); color: #fff;
-  border-radius: 50%; font-size: 18px; font-weight: 900;
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 16px;
-}
-.step h3 { font-size: 16px; font-weight: 900; color: var(--navy); margin-bottom: 8px; }
-.step p { font-size: 14px; color: var(--muted); font-weight: 600; line-height: 1.5; }
+.section-label { font-size: 11px; font-weight: 800; color: var(--blue); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
+.section-title { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 900; color: var(--navy); line-height: 1.1; margin-bottom: 16px; }
+.section-title span { color: var(--blue); }
+.section-body { font-size: 1.05rem; color: var(--muted); line-height: 1.7; font-weight: 600; max-width: 600px; margin-bottom: 40px; }
 
-/* ── WHY MOBILE ── */
-.benefits {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px; margin-top: 40px;
-}
-.benefit {
-  display: flex; gap: 16px; align-items: flex-start;
-  padding: 20px; border-radius: 12px;
-  background: #fff; border: 1.5px solid #e8f4fd;
-  box-shadow: 0 2px 12px rgba(2,17,37,0.05);
-}
-.benefit-icon {
-  width: 44px; height: 44px; flex-shrink: 0;
-  background: #e8f7ff; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px;
-}
+.benefits { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 40px; }
+.benefit { display: flex; gap: 16px; align-items: flex-start; padding: 20px; border-radius: 12px; background: #fff; border: 1.5px solid #e8f4fd; box-shadow: 0 2px 12px rgba(2,17,37,0.05); }
+.benefit-icon { width: 44px; height: 44px; flex-shrink: 0; background: #e8f7ff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
 .benefit-body h4 { font-size: 15px; font-weight: 900; color: var(--navy); margin-bottom: 4px; }
 .benefit-body p { font-size: 13px; color: var(--muted); font-weight: 600; line-height: 1.4; }
 
-/* ── CTA BANNER ── */
-.cta-banner {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-  padding: 60px 24px;
-  text-align: center;
-}
-.cta-banner h2 {
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
-  font-weight: 900; color: #fff;
-  margin-bottom: 12px;
-}
-.cta-banner p {
-  font-size: 1rem; color: rgba(255,255,255,0.75);
-  font-weight: 600; margin-bottom: 28px;
-}
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-top: 40px; }
+.step { background: #fff; border-radius: 14px; border: 1.5px solid #e8f4fd; padding: 28px 24px; box-shadow: 0 4px 20px rgba(2,17,37,0.06); }
+.step-num { width: 44px; height: 44px; background: var(--blue); color: #fff; border-radius: 50%; font-size: 18px; font-weight: 900; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.step h3 { font-size: 16px; font-weight: 900; color: var(--navy); margin-bottom: 8px; }
+.step p { font-size: 14px; color: var(--muted); font-weight: 600; line-height: 1.5; }
+
+.cta-banner { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); padding: 60px 24px; text-align: center; }
+.cta-banner h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 900; color: #fff; margin-bottom: 12px; }
+.cta-banner p { font-size: 1rem; color: rgba(255,255,255,0.75); font-weight: 600; margin-bottom: 28px; }
 .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-.cta-book {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--blue); color: #fff;
-  font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800;
-  padding: 14px 28px; border-radius: 10px;
-  text-decoration: none; transition: background .2s;
-}
+.cta-book { display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: #fff; font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800; padding: 14px 28px; border-radius: 10px; text-decoration: none; transition: background .2s; }
 .cta-book:hover { background: var(--blue-dark); }
-.cta-phone {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(255,255,255,0.12); color: #fff;
-  border: 2px solid rgba(255,255,255,0.3);
-  font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800;
-  padding: 14px 28px; border-radius: 10px;
-  text-decoration: none; transition: all .2s;
-}
+.cta-phone { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.12); color: #fff; border: 2px solid rgba(255,255,255,0.3); font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800; padding: 14px 28px; border-radius: 10px; text-decoration: none; transition: all .2s; }
 .cta-phone:hover { background: rgba(255,255,255,0.2); }
 
-/* ── FOOTER ── */
-.footer {
-  background: var(--navy);
-  padding: 32px 24px;
-  text-align: center;
-}
+.footer { background: var(--navy); padding: 32px 24px; text-align: center; }
 .footer p { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 600; }
 .footer a { color: var(--blue); text-decoration: none; }
 
 /* ── MOBILE ── */
 @media (max-width: 768px) {
+  .hero { align-items: flex-end; }
+
   .hero-bg {
-    background-image: url('https://raw.githubusercontent.com/DanielMobileEmissions/onthespotrenewal/main/Mobile Hero 4.png');
-    background-position: top right;
+    background-image: url('https://raw.githubusercontent.com/DanielMobileEmissions/onthespotrenewal/main/Mobile%20Hero%204.png');
+    background-position: top center;
+    background-size: cover;
   }
+
   .hero-bg::after {
-    background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.95) 45%, rgba(255,255,255,1) 65%);
+    background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.05) 0%,
+      rgba(255,255,255,0.4) 30%,
+      rgba(255,255,255,0.9) 50%,
+      rgba(255,255,255,1) 62%
+    );
   }
-  .hero-content {
-    padding: 40px 20px 40px;
-    display: flex; flex-direction: column;
-    min-height: calc(100vh - 64px);
-    justify-content: flex-end;
-  }
-  .hero h1 { font-size: 2.2rem; }
+
+  .hero-content { padding: 20px 20px 40px; width: 100%; }
+  .hero h1 { font-size: 2rem; max-width: 100%; }
+  .hero-sub { max-width: 100%; }
+  .widget-wrap { max-width: 100%; }
   .btn-call span { display: none; }
   .section { padding: 50px 20px; }
 }
 
 @media (max-width: 480px) {
-  .hero h1 { font-size: 1.9rem; }
-  .widget-wrap { padding: 18px; }
+  .hero h1 { font-size: 1.8rem; }
+  .widget-wrap { padding: 16px; }
 }
 
-/* Fade in animation */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.hero-content > * {
-  animation: fadeUp .6s ease both;
-}
-.hero-content > *:nth-child(1) { animation-delay: .1s; }
-.hero-content > *:nth-child(2) { animation-delay: .2s; }
-.hero-content > *:nth-child(3) { animation-delay: .3s; }
-.hero-content > *:nth-child(4) { animation-delay: .35s; }
-.hero-content > *:nth-child(5) { animation-delay: .4s; }
-.hero-content > *:nth-child(6) { animation-delay: .45s; }
+.hero-content > * { animation: fadeUp .5s ease both; }
+.hero-content > *:nth-child(1) { animation-delay: .05s; }
+.hero-content > *:nth-child(2) { animation-delay: .15s; }
+.hero-content > *:nth-child(3) { animation-delay: .25s; }
+.hero-content > *:nth-child(4) { animation-delay: .3s; }
+.hero-content > *:nth-child(5) { animation-delay: .35s; }
+.hero-content > *:nth-child(6) { animation-delay: .4s; }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="site-header">
   <a href="https://mobileemissions.com" class="logo">
-    <svg class="logo-mountains" viewBox="0 0 60 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M22 38L36 14L50 38H22Z" fill="#02adff" fill-opacity="0.15" stroke="#02adff" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M8 38L20 20L32 38H8Z" fill="#0a3d5c" fill-opacity="0.1" stroke="#0a3d5c" stroke-width="2" stroke-linejoin="round"/>
-      <path d="M28 16L33 8L38 16" stroke="#02adff" stroke-width="2" stroke-linejoin="round" fill="none"/>
-    </svg>
-    <div class="logo-text">MOBILE<br><span>EMISSIONS</span>.COM</div>
+    <img src="https://raw.githubusercontent.com/DanielMobileEmissions/onthespotrenewal/main/WEBSITE%20LOGO%20V1.png" alt="MobileEmissions.com"/>
   </a>
   <div class="header-cta">
     <a href="tel:8018008179" class="btn-call">
@@ -448,7 +297,6 @@ body {
   </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-content">
@@ -456,30 +304,16 @@ body {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9S3 16.97 3 12 7.03 3 12 3s9 4.03 9 9z"/></svg>
       Utah's Only Mobile Renewal Service
     </div>
-
     <h1>On The Spot<span>Registration Renewal</span></h1>
-
     <p class="hero-sub">We test your emissions and renew your registration — right in your driveway. No DMV. No lines. Done in 10 minutes.</p>
-
     <div class="hero-trust">
-      <div class="trust-stars">
-        <span class="stars">★★★★★</span>
-        5.0 · 237 reviews
-      </div>
-      <div class="trust-badge">
-        <span class="trust-dot"></span>
-        Est. 2023
-      </div>
-      <div class="trust-badge">
-        <span class="trust-dot"></span>
-        Authorized OTS Station
-      </div>
+      <div class="trust-stars"><span class="stars">★★★★★</span> 5.0 · 246 reviews</div>
+      <div class="trust-badge"><span class="trust-dot"></span> Est. 2023</div>
+      <div class="trust-badge"><span class="trust-dot"></span> Authorized OTS Station</div>
     </div>
-
     <div class="widget-wrap">
       <div class="widget-title">Check Your Service Area</div>
       <div class="widget-sub">Enter your ZIP or use your location to book</div>
-
       <div id="ots-widget">
         <div id="ots-s0">
           <div class="ots-zip-row">
@@ -489,24 +323,18 @@ body {
           <div class="ots-zip-err" id="ots-zip-err"></div>
           <div class="ots-divider">or</div>
           <button class="ots-loc-btn" id="ots-loc-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
             Use My Location
           </button>
         </div>
-
         <div class="ots-state" id="ots-s1">
           <div class="ots-spinner"></div>
           <div class="ots-ld-t">Finding your location…</div>
           <div class="ots-ld-s">Tap "Allow" when asked for location permission</div>
         </div>
-
         <div class="ots-state" id="ots-s2">
           <div class="ots-addr-card">
-            <div class="ots-pin-dot">
-              <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            </div>
+            <div class="ots-pin-dot"><svg viewBox="0 0 24 24" fill="white"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
             <div class="ots-addr-body">
               <input class="ots-street" id="ots-street" type="text" autocomplete="off" spellcheck="false" placeholder="Street address"/>
               <div class="ots-city" id="ots-city"></div>
@@ -522,14 +350,12 @@ body {
           </div>
           <p class="ots-note">*Includes emissions test + registration renewal</p>
         </div>
-
         <div class="ots-state" id="ots-s3">
           <div class="ots-icon">📍</div>
           <div class="ots-etitle">Couldn't get your location</div>
           <div class="ots-emsg" id="ots-emsg">Location access was denied.</div>
           <button class="ots-btn-outline" id="ots-btn-retry">Try Again</button>
         </div>
-
         <div class="ots-state" id="ots-s4">
           <div class="ots-icon">✅</div>
           <div class="ots-ok-t">You're all set!</div>
@@ -540,72 +366,32 @@ body {
   </div>
 </section>
 
-<!-- WHAT IS OTS -->
 <section class="section">
   <div class="section-inner">
     <div class="section-label">What is On The Spot Renewal?</div>
     <h2 class="section-title">Your Emissions Test &<span> Registration Renewal</span> — All at Once</h2>
     <p class="section-body">On The Spot Renewal (OTS) is Utah's program that lets authorized stations handle your vehicle registration renewal right at the time of your emissions test. As an authorized OTS station, we bring this entire process to your driveway. One appointment. One stop. Everything done.</p>
-
     <div class="benefits">
-      <div class="benefit">
-        <div class="benefit-icon">🚗</div>
-        <div class="benefit-body">
-          <h4>We Come to You</h4>
-          <p>No driving to a testing station. We show up at your home or workplace at your scheduled time.</p>
-        </div>
-      </div>
-      <div class="benefit">
-        <div class="benefit-icon">⚡</div>
-        <div class="benefit-body">
-          <h4>Done in 10 Minutes</h4>
-          <p>Your emissions test and registration renewal completed while you wait. No wasted afternoon.</p>
-        </div>
-      </div>
-      <div class="benefit">
-        <div class="benefit-icon">📋</div>
-        <div class="benefit-body">
-          <h4>No DMV Trip Needed</h4>
-          <p>Your new registration and sticker are handled on the spot. Skip the DMV line entirely.</p>
-        </div>
-      </div>
-      <div class="benefit">
-        <div class="benefit-icon">📅</div>
-        <div class="benefit-body">
-          <h4>Book on Your Schedule</h4>
-          <p>Morning, afternoon, at home or at work. We work around your day, not the other way around.</p>
-        </div>
-      </div>
+      <div class="benefit"><div class="benefit-icon">🚗</div><div class="benefit-body"><h4>We Come to You</h4><p>No driving to a testing station. We show up at your home or workplace at your scheduled time.</p></div></div>
+      <div class="benefit"><div class="benefit-icon">⚡</div><div class="benefit-body"><h4>Done in 10 Minutes</h4><p>Your emissions test and registration renewal completed while you wait. No wasted afternoon.</p></div></div>
+      <div class="benefit"><div class="benefit-icon">📋</div><div class="benefit-body"><h4>No DMV Trip Needed</h4><p>Your new registration and sticker are handled on the spot. Skip the DMV line entirely.</p></div></div>
+      <div class="benefit"><div class="benefit-icon">📅</div><div class="benefit-body"><h4>Book on Your Schedule</h4><p>Morning, afternoon, at home or at work. We work around your day, not the other way around.</p></div></div>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
 <section class="section hiw-bg">
   <div class="section-inner">
     <div class="section-label">How It Works</div>
     <h2 class="section-title">Three Steps to<span> Done</span></h2>
     <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <h3>Book Online in Seconds</h3>
-        <p>Choose your date, time, and location. Pick the On The Spot Renewal add-on when booking.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <h3>We Show Up</h3>
-        <p>Our technician arrives at your home or workplace with everything needed to test and renew.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <h3>Drive Away Legal</h3>
-        <p>Your emissions test is passed, your registration is renewed, and your new sticker is applied. Done.</p>
-      </div>
+      <div class="step"><div class="step-num">1</div><h3>Book Online in Seconds</h3><p>Choose your date, time, and location. Pick the On The Spot Renewal add-on when booking.</p></div>
+      <div class="step"><div class="step-num">2</div><h3>We Show Up</h3><p>Our technician arrives at your home or workplace with everything needed to test and renew.</p></div>
+      <div class="step"><div class="step-num">3</div><h3>Drive Away Legal</h3><p>Your emissions test is passed, your registration is renewed, and your new sticker is applied. Done.</p></div>
     </div>
   </div>
 </section>
 
-<!-- CTA BANNER -->
 <section class="cta-banner">
   <h2>Ready to Skip the Line?</h2>
   <p>Book your mobile emissions test + on the spot renewal today. We come to you.</p>
@@ -621,9 +407,8 @@ body {
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer class="footer">
-  <p>© 2025 <a href="https://mobileemissions.com">MobileEmissions.com</a> · Utah's First Mobile Emissions Testing Company · <a href="https://mobileemissions.com/on-the-spot-renewal/">Learn More</a></p>
+  <p>© 2026 <a href="https://mobileemissions.com">MobileEmissions.com</a> · Utah's First Mobile Emissions Testing Company · <a href="https://mobileemissions.com/on-the-spot-renewal/">Learn More</a></p>
 </footer>
 
 <script>
@@ -632,7 +417,6 @@ body {
   var UTAH_ZONE2 = ['84601','84602','84603','84604','84605','84606','84626','84628','84633','84651','84653','84655','84660','84662','84663','84664'];
   var DAVIS      = ['84010','84011','84014','84015','84016','84089','84025','84037','84040','84041','84054','84056','84075','84087'];
   var CACHE      = ['84304','84305','84308','84318','84319','84320','84321','84322','84323','84341','84325','84326','84327','84328','84332','84333','84335','84338','84339'];
-
   var URLS = {
     utah_zone1: 'https://mobileemissions.com/mobile-emissions-testing-utah-county/?zone=1',
     utah_zone2: 'https://mobileemissions.com/mobile-emissions-testing-utah-county/?zone=2',
@@ -640,7 +424,6 @@ body {
     cache:      'https://mobileemissions.com/emissions-testing-cache-county/',
     outside:    'https://mobileemissions.com/coming-soon/'
   };
-
   function route(zip) {
     if (UTAH_ZONE1.indexOf(zip) > -1) return 'utah_zone1';
     if (UTAH_ZONE2.indexOf(zip) > -1) return 'utah_zone2';
@@ -648,106 +431,77 @@ body {
     if (CACHE.indexOf(zip)      > -1) return 'cache';
     return null;
   }
-
-  var curRoute = null, currentZip = '', isResetting = false;
-
+  var curRoute = null, currentZip = '';
   function showState(id) {
-    ['ots-s1','ots-s2','ots-s3','ots-s4'].forEach(function(s) {
-      var el = document.getElementById(s);
-      if (el) el.style.display = 'none';
-    });
-    document.getElementById('ots-s0').style.display = id === 'ots-s0' ? 'block' : 'none';
-    if (id !== 'ots-s0') {
-      var el = document.getElementById(id);
-      if (el) { el.style.display = 'flex'; }
-    }
+    ['ots-s1','ots-s2','ots-s3','ots-s4'].forEach(function(s){ var el=document.getElementById(s); if(el) el.style.display='none'; });
+    document.getElementById('ots-s0').style.display = id==='ots-s0' ? 'block' : 'none';
+    if (id !== 'ots-s0') { var el=document.getElementById(id); if(el) el.style.display='flex'; }
   }
-
   function handleZip() {
-    var zip = document.getElementById('ots-zip').value.trim();
-    var err = document.getElementById('ots-zip-err');
-    if (!zip || zip.length !== 5 || isNaN(zip)) {
-      err.textContent = 'Please enter a valid 5-digit ZIP';
-      return;
-    }
-    err.textContent = '';
-    currentZip = zip;
-    curRoute = route(zip);
-    document.getElementById('ots-street').value = '';
-    document.getElementById('ots-city').textContent = zip;
-    var out = document.getElementById('ots-out');
-    if (!curRoute) { out.classList.add('on'); curRoute = 'outside'; }
-    else { out.classList.remove('on'); }
+    var zip=document.getElementById('ots-zip').value.trim();
+    var err=document.getElementById('ots-zip-err');
+    if (!zip||zip.length!==5||isNaN(zip)) { err.textContent='Please enter a valid 5-digit ZIP'; return; }
+    err.textContent=''; currentZip=zip; curRoute=route(zip);
+    document.getElementById('ots-street').value='';
+    document.getElementById('ots-city').textContent=zip;
+    var out=document.getElementById('ots-out');
+    if (!curRoute) { out.classList.add('on'); curRoute='outside'; } else { out.classList.remove('on'); }
     showState('ots-s2');
   }
-
   function startLoc() {
-    if (!navigator.geolocation) {
-      document.getElementById('ots-emsg').textContent = 'Your browser does not support location services.';
-      showState('ots-s3'); return;
-    }
+    if (!navigator.geolocation) { document.getElementById('ots-emsg').textContent='Your browser does not support location services.'; showState('ots-s3'); return; }
     showState('ots-s1');
-    navigator.geolocation.getCurrentPosition(onGPS, onErr, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+    navigator.geolocation.getCurrentPosition(onGPS, onErr, {enableHighAccuracy:true,timeout:15000,maximumAge:0});
   }
-
   function onGPS(p) {
-    var lat = p.coords.latitude, lng = p.coords.longitude;
-    fetch('https://nominatim.openstreetmap.org/reverse?lat='+lat+'&lon='+lng+'&format=json&addressdetails=1', { headers: { 'Accept-Language': 'en' } })
-    .then(function(r) { return r.json(); })
-    .then(function(d) {
-      var a = d.address || {};
-      var st = (a.house_number && a.road) ? a.house_number+' '+a.road : (a.road || (d.display_name||'').split(',')[0]);
-      var zip = a.postcode || '';
-      var city = a.city || a.town || a.village || a.hamlet || '';
-      document.getElementById('ots-street').value = st;
-      document.getElementById('ots-city').textContent = [city,'UT',zip].filter(Boolean).join(', ');
-      currentZip = zip;
-      curRoute = route(zip);
-      var out = document.getElementById('ots-out');
-      if (!curRoute) { out.classList.add('on'); curRoute = 'outside'; }
-      else { out.classList.remove('on'); }
+    var lat=p.coords.latitude, lng=p.coords.longitude;
+    fetch('https://nominatim.openstreetmap.org/reverse?lat='+lat+'&lon='+lng+'&format=json&addressdetails=1',{headers:{'Accept-Language':'en'}})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var a=d.address||{};
+      var st=(a.house_number&&a.road)?a.house_number+' '+a.road:(a.road||(d.display_name||'').split(',')[0]);
+      var zip=a.postcode||''; var city=a.city||a.town||a.village||a.hamlet||'';
+      document.getElementById('ots-street').value=st;
+      document.getElementById('ots-city').textContent=[city,'UT',zip].filter(Boolean).join(', ');
+      currentZip=zip; curRoute=route(zip);
+      var out=document.getElementById('ots-out');
+      if (!curRoute){out.classList.add('on');curRoute='outside';}else{out.classList.remove('on');}
       showState('ots-s2');
     })
-    .catch(function() {
-      document.getElementById('ots-street').value = 'Near '+lat.toFixed(4)+', '+lng.toFixed(4);
-      document.getElementById('ots-city').textContent = 'Utah, UT';
-      curRoute = 'outside';
-      showState('ots-s2');
+    .catch(function(){
+      document.getElementById('ots-street').value='Near '+lat.toFixed(4)+', '+lng.toFixed(4);
+      document.getElementById('ots-city').textContent='Utah, UT';
+      curRoute='outside'; showState('ots-s2');
     });
   }
-
   function onErr(e) {
-    var msgs = { 1: 'Location access was denied. Please try again and allow location.', 2: "We couldn't determine your location.", 3: 'Location timed out. Try stepping outside.' };
-    document.getElementById('ots-emsg').textContent = msgs[e.code] || 'Something went wrong.';
+    var msgs={1:'Location access was denied. Please try again.',2:"We couldn't determine your location.",3:'Location timed out. Try stepping outside.'};
+    document.getElementById('ots-emsg').textContent=msgs[e.code]||'Something went wrong.';
     showState('ots-s3');
   }
-
   function confirmLoc() {
-    var r = curRoute || 'outside';
-    var lb = { utah_zone1: 'Utah County', utah_zone2: 'Utah County', davis: 'Davis County', cache: 'Cache County', outside: 'our service page' };
-    document.getElementById('ots-okmsg').textContent = 'Taking you to '+lb[r]+' booking…';
+    var r=curRoute||'outside';
+    var lb={utah_zone1:'Utah County',utah_zone2:'Utah County',davis:'Davis County',cache:'Cache County',outside:'our service page'};
+    document.getElementById('ots-okmsg').textContent='Taking you to '+lb[r]+' booking…';
     showState('ots-s4');
-    setTimeout(function() { window.location.href = URLS[r]; }, 1400);
+    setTimeout(function(){window.location.href=URLS[r];},1400);
   }
-
   function reset() {
-    curRoute = null; currentZip = '';
-    document.getElementById('ots-zip').value = '';
-    document.getElementById('ots-zip-err').textContent = '';
-    document.getElementById('ots-street').value = '';
-    document.getElementById('ots-city').textContent = '';
+    curRoute=null; currentZip='';
+    document.getElementById('ots-zip').value='';
+    document.getElementById('ots-zip-err').textContent='';
+    document.getElementById('ots-street').value='';
+    document.getElementById('ots-city').textContent='';
     document.getElementById('ots-out').classList.remove('on');
     showState('ots-s0');
   }
-
-  document.getElementById('ots-zip-btn').addEventListener('click', handleZip);
-  document.getElementById('ots-zip').addEventListener('keydown', function(e) { if (e.key === 'Enter') handleZip(); });
-  document.getElementById('ots-loc-btn').addEventListener('click', startLoc);
-  document.getElementById('ots-btn-yes').addEventListener('click', confirmLoc);
-  document.getElementById('ots-btn-no').addEventListener('click', reset);
-  document.getElementById('ots-btn-retry').addEventListener('click', reset);
+  document.getElementById('ots-zip-btn').addEventListener('click',handleZip);
+  document.getElementById('ots-zip').addEventListener('keydown',function(e){if(e.key==='Enter')handleZip();});
+  document.getElementById('ots-loc-btn').addEventListener('click',startLoc);
+  document.getElementById('ots-btn-yes').addEventListener('click',confirmLoc);
+  document.getElementById('ots-btn-no').addEventListener('click',reset);
+  document.getElementById('ots-btn-retry').addEventListener('click',reset);
 })();
 </script>
-
 </body>
 </html>
